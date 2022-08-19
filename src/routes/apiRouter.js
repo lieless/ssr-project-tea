@@ -33,7 +33,6 @@ router.post('/tea/add', async (req, res) => {
   const {
     name, img, description, location, x, y,
   } = req.body;
-  console.log(req.body);
   const newTea = await Tea.create({
     name, img, description, location, x, y,
   });
@@ -45,7 +44,6 @@ router.delete('/fav/:id', async (req, res) => {
   const {
     userId,
   } = req.body;
-  console.log(req.body);
   try {
     const tea = await Favourite.findOne({ where: { user_id: userId, tea_id: id } });
     if (tea) {
@@ -63,7 +61,6 @@ router.post('/fav/:id', async (req, res) => {
   const {
     userId,
   } = req.body;
-  console.log(req.body);
   try {
     const tea = await Favourite.findOne({ where: { user_id: userId, tea_id: id } });
     if (!tea) {
@@ -87,8 +84,6 @@ router.post('/teas/:id/comments', async (req, res) => {
   const {
     txt, userId,
   } = req.body;
-  console.log(req.body);
-
   const newComment = await Comment.create({
     text: txt, tea_id: id, user_id: userId,
   });
@@ -99,12 +94,11 @@ router.post('/teas/:id/comments', async (req, res) => {
 
 router.post('/godmode', async (req, res) => {
   const { id, code } = req.body;
-  console.log(id, code);
   if (code === 'hesoyam') {
     const user = await User.findByPk(id);
     user.update({ role_id: 1 });
     res.sendStatus(200);
-  } else {res.sendStatus(400)};
+  } else { res.sendStatus(400); }
 });
 
 router.delete('/teas/:id', async (req, res) => {
@@ -119,6 +113,18 @@ router.delete('/teas/:id', async (req, res) => {
   } catch (err) {
     console.error(err);
   }
+});
+
+router.put('/teas/edit/:id', async (req, res) => {
+  const {
+    name, img, description, location, x, y,
+  } = req.body;
+  const { id } = req.params;
+  const tea = await Tea.findOne({ where: { id } });
+  if (tea) {
+    const teaEdit = await Tea.update({name: name, img: img, description: description, location : location, x:x, y:y}, { where: { id: req.params.id } });
+    return res.sendStatus(200);
+  } res.sendStatus(400);
 });
 
 export default router;

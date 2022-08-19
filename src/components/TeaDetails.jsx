@@ -4,7 +4,7 @@ import Comment from './Comments';
 
 function TeaDetails({ authState }) {
   const [teaState, setTeaState] = useState({});
-  const [isFavState, setIsFavState] = useState(true);
+  const [isFavState, setIsFavState] = useState(false);
   const [userState, setUserState] = useState({
     email: '',
     name: '',
@@ -30,6 +30,13 @@ function TeaDetails({ authState }) {
     // setIsFavState(userState.favTeas.includes(teaState));
     }
   }, []);
+
+  useEffect(() => {
+    if (teaState && userState) {
+      setIsFavState((userState.favTeas.filter((el) => el.id === id)).length > 0);
+    }
+  }, [userState]);
+  console.log(isFavState)
 
   const deleteHandler = async (e) => {
     e.preventDefault();
