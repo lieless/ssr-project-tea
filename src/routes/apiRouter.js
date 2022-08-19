@@ -1,3 +1,4 @@
+import e from 'express';
 import express, { text } from 'express';
 import {
   User, Tea, Comment, Role, Favourite,
@@ -104,7 +105,7 @@ router.post('/godmode', async (req, res) => {
 router.delete('/teas/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const tea = await Tea.findOne({ where: { tea_id: id } });
+    const tea = await Tea.findByPk(id);
     if (tea) {
       await tea.destroy();
       return res.sendStatus(200);
