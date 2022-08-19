@@ -6,6 +6,7 @@ import Main from './Main';
 import Navbar from './Navbar';
 import Registration from './Registration';
 import TeaDetails from './TeaDetails';
+import Footer from './Footeer';
 
 function App({ userSession }) {
   const [authState, setAuthState] = useState(userSession || null);
@@ -24,6 +25,7 @@ function App({ userSession }) {
           </Routes>
         </div>
       </div>
+      <Footer />
     </>
   );
 }
