@@ -107,4 +107,18 @@ router.post('/godmode', async (req, res) => {
   } else {res.sendStatus(400)};
 });
 
+router.delete('/teas/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const tea = await Tea.findOne({ where: { tea_id: id } });
+    if (tea) {
+      await tea.destroy();
+      return res.sendStatus(200);
+    }
+    res.sendStatus(400);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 export default router;
