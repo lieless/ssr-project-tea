@@ -24,7 +24,15 @@ function AdminLk({ userState }) {
       .then((data) => setAllTea(data));
   }, []);
 
-  console.log(allTea);
+  // удаление чая
+  const handlerDelete = async (e) => {
+    const del = await fetch(`/api/lk/teas/${e.target.id}`, {
+      method: 'delete',
+    });
+    if (del.ok) {
+      setAllTea((prev) => prev.filter((item) => item.id !== Number(e.target.id)));
+    }
+  };
 
   const inputHandler = (e) => {
     setInputTea((prev) => ({
@@ -43,7 +51,6 @@ function AdminLk({ userState }) {
       body: JSON.stringify(inputTea),
     });
     const data = await response.json();
-    console.log(data);
     setAllTea((prev) => [...prev, data]);
   };
   return (
@@ -148,7 +155,7 @@ function AdminLk({ userState }) {
                 <h5 className="card-title">{el.name}</h5>
                 <p className="card-text">{el.description}</p>
                 <button type="button" className="btn btn-outline-success">редактировать</button>
-                <button type="button" className="btn btn-outline-danger">удалить чай из блога</button>
+                <button type="button" className="btn btn-outline-danger" onClick={handlerDelete} id={el.id}>удалить чай из блога</button>
               </div>
             </div>
           </div>
